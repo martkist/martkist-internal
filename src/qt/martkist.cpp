@@ -44,6 +44,9 @@
 
 #include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
+#include <boost/process.hpp>
+namespace bp = boost::process;
+namespace bfs = boost::filesystem;
 
 #include <QApplication>
 #include <QDebug>
@@ -228,6 +231,12 @@ public:
     /// Get window identifier of QMainWindow (MartkistGUI)
     WId getMainWinId() const;
 
+    void startFreech();
+    void stopFreech();
+
+private:
+    bp::child* freechd = NULL;
+
 public Q_SLOTS:
     void initializeResult(int retval);
     void shutdownResult(int retval);
@@ -398,6 +407,78 @@ MartkistApplication::~MartkistApplication()
     platformStyle = 0;
 }
 
+void MartkistApplication::startFreech()
+{
+    bfs::path freech_path = GetDataDir() / "freech";
+    bfs::path freech_html_path = freech_path / "html";
+    LogPrintf("Freech path: %s\n", freech_path.string());
+    LogPrintf("Freech HTML path: %s\n", freech_html_path.string());
+
+    LogPrintf("Checking if %s exists...\n", freech_html_path.string());
+    if (!bfs::exists(freech_html_path))
+    {
+        bfs::path source_html_path("freech-html");
+        if (!bfs::exists(source_html_path))
+            LogPrintf("WARNING: Can't find ./freech-html -- Freech integration won't work!\n");
+
+        LogPrintf("Deploying freech-html\n");
+        bfs::create_directories(freech_html_path);
+
+        for (const auto& dirEnt : bfs::recursive_directory_iterator{source_html_path})
+        {
+            const auto& path = dirEnt.path();
+            auto relativePathStr = path.string();
+            boost::replace_first(relativePathStr, source_html_path.string(), "");
+            bfs::copy(path, freech_html_path / relativePathStr);
+        }
+    }
+
+    LogPrintf("Starting freechd...\n");
+    
+    // For now we will use a fixed user/pass, to allow users
+    // to access backend easily for debugging, but in the future
+    // we should generate a random password to improve privacy.
+    #ifdef WIN32
+    bfs::path freechd_path("freechd.exe");
+    #else
+    bfs::path freechd_path("./freechd");
+    #endif
+    
+    if (!bfs::exists(freechd_path))
+    {
+        LogPrintf("WARNING: Can't find freechd! Freech integration won't work!");
+    }
+    else
+    {
+        freechd = new bp::child(
+            freechd_path,
+            bp::args({
+                "-datadir=" + freech_path.string(),
+                "-rpcuser=user",
+                "-rpcpassword=pwd"
+            })
+        );
+
+        LogPrintf("Started freechd with id %i\n", freechd->id());
+    }
+}
+
+void MartkistApplication::stopFreech()
+{
+    // Show a simple window indicating shutdown status
+    // Do this first as some of the steps may take some time below,
+    // for example the RPC console may still be executing a command.
+    shutdownWindow.reset(ShutdownWindow::showShutdownWindow(window));
+
+    if (freechd != NULL)
+    {
+        LogPrintf("Stopping freechd id %i...\n", freechd->id());
+
+        pid_t pid = freechd->id();
+        kill(pid, SIGINT);
+    }
+}
+
 #ifdef ENABLE_WALLET
 void MartkistApplication::createPaymentServer()
 {
@@ -459,6 +540,8 @@ void MartkistApplication::parameterSetup()
 
 void MartkistApplication::requestInitialize()
 {
+    startFreech();
+
     qDebug() << __func__ << ": Requesting initialize";
     startThread();
     Q_EMIT requestedInitialize();
@@ -466,10 +549,7 @@ void MartkistApplication::requestInitialize()
 
 void MartkistApplication::requestShutdown()
 {
-    // Show a simple window indicating shutdown status
-    // Do this first as some of the steps may take some time below,
-    // for example the RPC console may still be executing a command.
-    shutdownWindow.reset(ShutdownWindow::showShutdownWindow(window));
+    stopFreech();
 
     qDebug() << __func__ << ": Requesting shutdown";
     startThread();
