@@ -43,7 +43,9 @@ Freech
 
 The Martkist Wallet (`martkist-qt`) provides integration with [Freech](https://github.com/martkist/freech-core).
 
-If you want to develop on the Markist Wallet you must initialize the `freech-html` submodule before starting `martkist-qt` for the first time, or clone `freech-html` to `<datadir>/.freech/html` yourself.
+If you want to develop on the Markist Wallet you must:
+1. initialize the `freech-html` submodule before starting `martkist-qt` for the first time, or clone `freech-html` to `<datadir>/.freech/html` yourself
+2. copy `freechd` or `freechd.exe` into your current working directory before starting `martkist-qt`
 
 Note: `martkistd` does not depend on Freech.
 
