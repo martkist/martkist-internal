@@ -21,21 +21,16 @@
   </property>
   <layout class="QVBoxLayout" name="topLayout">
    <item>
-    <widget class="QWebEngineView" name="webEngineView">
-     <property name="url">
-      <url>
-       <string>http://user:pwd@localhost:4032/</string>
-      </url>
-     </property>
+    <widget class="QWebView" name="webView">
     </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebEngineView</class>
+   <class>QWebView</class>
    <extends>QWidget</extends>
-   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
+   <header location="global">QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
  <resources/>
