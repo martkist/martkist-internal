@@ -186,6 +186,7 @@ define $(package)_build_cmds
   find . -type f -name *.rb -exec dos2unix {} \; && \
   find . -type f -name *.asm -exec dos2unix {} \; && \
   find Source/JavaScriptCore -type f -exec dos2unix {} \; && \
+  find Source/WebCore -type f -exec dos2unix {} \; && \
   ./Tools/Scripts/build-webkit --qt --release --no-geolocation --64-bit --cmakeargs="-Wno-dev -DCMAKE_PREFIX_PATH=$($(package)_extract_dir)/qtbase -DENABLE_DEVICE_ORIENTATION=OFF -DENABLE_VIDEO=OFF -DENABLE_X11_TARGET=OFF -DUSE_GSTREAMER=OFF -DENABLE_WEB_AUDIO=OFF -DENABLE_GEOLOCATION=OFF -DENABLE_TOUCH_EVENTS=OFF DENABLE_DEVICE_ORIENTATION=OFF -DUSE_THIN_ARCHIVES=OFF -DENABLE_OPENGL=OFF -DUSE_LIBHYPHEN=OFF -DENABLE_XSLT=OFF -DENABLE_SPELLCHECK=OFF -DENABLE_PRINT_SUPPORT=OFF -DENABLE_QT_GESTURE_EVENTS=OFF -DENABLE_SAMPLING_PROFILER=OFF -DENABLE_API_TESTS=OFF -DENABLE_WEBKIT2=OFF -DENABLE_TOOLS=OFF -DENABLE_TEST_SUPPORT=OFF"
 endef
 
