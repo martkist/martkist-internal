@@ -187,6 +187,7 @@ define $(package)_build_cmds
   find Source/JavaScriptCore -type f -exec dos2unix {} \; && \
   find Source/WebCore -type f -exec dos2unix {} \; && \
   export SQLITE3SRCDIR=$($(package)_extract_dir)/qtbase/src/3rdparty/sqlite && \
+  export CMAKE_INSTALL_PREFIX=$($(package)_staging_dir) && \
   ./Tools/Scripts/build-webkit --qt --release --no-geolocation --64-bit --cmakeargs="-Wno-dev -DCMAKE_PREFIX_PATH=$($(package)_extract_dir)/qtbase -DENABLE_DEVICE_ORIENTATION=OFF -DENABLE_VIDEO=OFF -DENABLE_X11_TARGET=OFF -DUSE_GSTREAMER=OFF -DENABLE_WEB_AUDIO=OFF -DENABLE_GEOLOCATION=OFF -DENABLE_TOUCH_EVENTS=OFF DENABLE_DEVICE_ORIENTATION=OFF -DUSE_THIN_ARCHIVES=OFF -DENABLE_OPENGL=OFF -DUSE_LIBHYPHEN=OFF -DENABLE_XSLT=OFF -DENABLE_SPELLCHECK=OFF -DENABLE_PRINT_SUPPORT=OFF -DENABLE_QT_GESTURE_EVENTS=OFF -DENABLE_SAMPLING_PROFILER=OFF -DENABLE_API_TESTS=OFF -DENABLE_WEBKIT2=OFF -DENABLE_TOOLS=OFF -DENABLE_TEST_SUPPORT=OFF"
 endef
 
@@ -198,7 +199,7 @@ define $(package)_stage_cmds
     cp qtbase/src/plugins/platforms/xcb/xcb-static/libxcb-static.a $($(package)_staging_prefix_dir)/lib; \
   fi && \
   cd qtwebkit/WebKitBuild/Release && \
-  CMAKE_INSTALL_PREFIX=$($(package)_staging_dir) ninja install
+  ninja install
 endef
 
 define $(package)_postprocess_cmds
