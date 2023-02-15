@@ -10,7 +10,6 @@
 #include "wallet/wallet.h"
 #include "walletmodel.h"
 
-#include <QtWebEngineWidgets/QWebEnginePage>
 #include <QNetworkCookieJar>
 
 class FreechWebPage : public QWebPage
