@@ -165,7 +165,6 @@ define $(package)_config_cmds
   export PKG_CONFIG_SYSROOT_DIR=/ && \
   export PKG_CONFIG_LIBDIR=$(host_prefix)/lib/pkgconfig && \
   export PKG_CONFIG_PATH=$(host_prefix)/share/pkgconfig  && \
-  export SQLITE3SRCDIR=$($(package)_extract_dir)/qtbase/src/3rdparty/sqlite && \
   ./configure $($(package)_config_opts) && \
   echo "host_build: QT_CONFIG ~= s/system-zlib/zlib" >> mkspecs/qconfig.pri && \
   echo "CONFIG += force_bootstrap" >> mkspecs/qconfig.pri && \
@@ -187,6 +186,7 @@ define $(package)_build_cmds
   find . -type f -name *.asm -exec dos2unix {} \; && \
   find Source/JavaScriptCore -type f -exec dos2unix {} \; && \
   find Source/WebCore -type f -exec dos2unix {} \; && \
+  export SQLITE3SRCDIR=$($(package)_extract_dir)/qtbase/src/3rdparty/sqlite && \
   ./Tools/Scripts/build-webkit --qt --release --no-geolocation --64-bit --cmakeargs="-Wno-dev -DCMAKE_PREFIX_PATH=$($(package)_extract_dir)/qtbase -DENABLE_DEVICE_ORIENTATION=OFF -DENABLE_VIDEO=OFF -DENABLE_X11_TARGET=OFF -DUSE_GSTREAMER=OFF -DENABLE_WEB_AUDIO=OFF -DENABLE_GEOLOCATION=OFF -DENABLE_TOUCH_EVENTS=OFF DENABLE_DEVICE_ORIENTATION=OFF -DUSE_THIN_ARCHIVES=OFF -DENABLE_OPENGL=OFF -DUSE_LIBHYPHEN=OFF -DENABLE_XSLT=OFF -DENABLE_SPELLCHECK=OFF -DENABLE_PRINT_SUPPORT=OFF -DENABLE_QT_GESTURE_EVENTS=OFF -DENABLE_SAMPLING_PROFILER=OFF -DENABLE_API_TESTS=OFF -DENABLE_WEBKIT2=OFF -DENABLE_TOOLS=OFF -DENABLE_TEST_SUPPORT=OFF"
 endef
 
