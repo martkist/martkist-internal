@@ -197,7 +197,7 @@ define $(package)_stage_cmds
   if `test -f qtbase/src/plugins/platforms/xcb/xcb-static/libxcb-static.a`; then \
     cp qtbase/src/plugins/platforms/xcb/xcb-static/libxcb-static.a $($(package)_staging_prefix_dir)/lib; \
   fi && \
-  cd WebKitBuild/Release && \
+  cd qtwebkit/WebKitBuild/Release && \
   CMAKE_INSTALL_PREFIX=$($(package)_staging_dir) ninja install
 endef
 
