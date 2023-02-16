@@ -422,17 +422,21 @@ void MartkistApplication::startFreech()
     {
         bfs::path source_html_path("freech-html");
         if (!bfs::exists(source_html_path))
-            LogPrintf("WARNING: Can't find ./freech-html -- Freech integration won't work!\n");
-
-        LogPrintf("Deploying freech-html\n");
-        bfs::create_directories(freech_html_path);
-
-        for (const auto& dirEnt : bfs::recursive_directory_iterator{source_html_path})
         {
-            const auto& path = dirEnt.path();
-            auto relativePathStr = path.string();
-            boost::replace_first(relativePathStr, source_html_path.string(), "");
-            bfs::copy(path, freech_html_path / relativePathStr);
+            LogPrintf("WARNING: Can't find ./freech-html -- Freech integration won't work!\n");
+        }
+        else 
+        {
+            LogPrintf("Deploying freech-html\n");
+            bfs::create_directories(freech_html_path);
+
+            for (const auto& dirEnt : bfs::recursive_directory_iterator{source_html_path})
+            {
+                const auto& path = dirEnt.path();            
+                auto relativePathStr = path.string();
+                boost::replace_first(relativePathStr, source_html_path.string(), "");
+                bfs::copy(path, freech_html_path / relativePathStr);
+            }
         }
     }
 
@@ -478,8 +482,7 @@ void MartkistApplication::stopFreech()
     {
         LogPrintf("Stopping freechd id %i...\n", freechd->id());
         #ifdef WIN32
-        HANDLE winHandle = reinterpret_cast<HANDLE>(freechd->native_handle());    
-        AttachConsole(static_cast<DWORD>(reinterpret_cast<DWORD_PTR>(winHandle)));
+        AttachConsole(freechd->id());
         GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
         FreeConsole();
         #else
