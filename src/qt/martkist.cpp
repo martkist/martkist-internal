@@ -45,6 +45,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
 #include <boost/process.hpp>
+#include <boost/process/windows.hpp>
 namespace bp = boost::process;
 namespace bfs = boost::filesystem;
 
@@ -458,7 +459,8 @@ void MartkistApplication::startFreech()
                 "-datadir=" + freech_path.string(),
                 "-rpcuser=user",
                 "-rpcpassword=pwd"
-            })
+            }),
+            ::boost::process::windows::hide
         );
 
         LogPrintf("Started freechd with id %i\n", freechd->id());
