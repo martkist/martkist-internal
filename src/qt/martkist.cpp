@@ -60,6 +60,8 @@ namespace bfs = boost::filesystem;
 #include <QTranslator>
 #include <QSslConfiguration>
 
+#include <windows.h>
+
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
 #if QT_VERSION < 0x050000
@@ -473,9 +475,15 @@ void MartkistApplication::stopFreech()
     if (freechd != NULL)
     {
         LogPrintf("Stopping freechd id %i...\n", freechd->id());
-
+        #ifdef WIN32
+        HANDLE winHandle = reinterpret_cast<HANDLE>(freechd->native_handle());    
+        AttachConsole(static_cast<DWORD>(reinterpret_cast<DWORD_PTR>(winHandle)));
+        GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+        FreeConsole();
+        #else
         pid_t pid = freechd->id();
         kill(pid, SIGINT);
+        #endif
     }
 }
 
