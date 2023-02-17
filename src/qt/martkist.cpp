@@ -45,7 +45,9 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/thread.hpp>
 #include <boost/process.hpp>
+#ifdef WIN32
 #include <boost/process/windows.hpp>
+#endif
 namespace bp = boost::process;
 namespace bfs = boost::filesystem;
 
@@ -457,6 +459,7 @@ void MartkistApplication::startFreech()
     }
     else
     {
+        #ifdef WIN32
         freechd = new bp::child(
             freechd_path,
             bp::args({
@@ -466,6 +469,16 @@ void MartkistApplication::startFreech()
             }),
             ::boost::process::windows::hide
         );
+        #else
+        freechd = new bp::child(
+            freechd_path,
+            bp::args({
+                "-datadir=" + freech_path.string(),
+                "-rpcuser=user",
+                "-rpcpassword=pwd"
+            })
+        );
+        #endif
 
         LogPrintf("Started freechd with id %i\n", freechd->id());
     }
