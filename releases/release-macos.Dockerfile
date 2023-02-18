@@ -48,7 +48,7 @@ RUN apt-get install -y xz-utils
 
 WORKDIR /
 #ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
-RUN git clone https://github.com/blockmartkist/martkist-internal.git martkist
+RUN git  clone https://github.com/blockmartkist/martkist-internal.git martkist
 
 ENV BASEPREFIX=/martkist/depends
 ENV HOST=x86_64-apple-darwin11
