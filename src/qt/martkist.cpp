@@ -46,6 +46,7 @@
 #include <boost/thread.hpp>
 #include <boost/process.hpp>
 #ifdef WIN32
+#include <windows.h>
 #include <boost/process/windows.hpp>
 #endif
 namespace bp = boost::process;
@@ -62,8 +63,6 @@ namespace bfs = boost::filesystem;
 #include <QTimer>
 #include <QTranslator>
 #include <QSslConfiguration>
-
-#include <windows.h>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
