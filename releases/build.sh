@@ -16,7 +16,7 @@ DOCKEROPTS="--build-arg TAG=$MARTKIST_TAG --build-arg MAKEOPTS=$MAKEOPTS"
 echo "Building macOS release..."
 DOCKER_BUILDKIT=0 docker build $DOCKEROPTS -t freech:release-macos-$MARTKIST_TAG -f release-macos.Dockerfile .
 container_id=$(docker create "freech:release-macos-$MARTKIST_TAG")
-docker cp "$container_id:/outputs/" .
+docker cp -q "$container_id:/outputs/" .
 docker rm "$container_id"
 
 echo "Done!"

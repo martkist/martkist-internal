@@ -48,7 +48,7 @@ RUN apt-get install -y xz-utils
 
 WORKDIR /
 #ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
-RUN git  clone https://github.com/blockmartkist/martkist-internal.git martkist
+RUN git    clone https://github.com/blockmartkist/martkist-internal.git martkist
 
 ENV BASEPREFIX=/martkist/depends
 ENV HOST=x86_64-apple-darwin11
@@ -66,12 +66,12 @@ ENV HOSTPREFIX=${BASEPREFIX}/${HOST}
 COPY --from=qt /opt/qt/5.14.2 /opt/qt/5.14.2
 ENV QTNATIVE=/opt/qt/5.14.2/gcc_64
 ENV QTDIR=/opt/qt/5.14.2/clang_64
+RUN cp -r ${QTDIR}/lib/pkgconfig ${HOSTPREFIX}/lib
 
 WORKDIR /martkist
 #RUN git checkout ${TAG}
 RUN git submodule update --init
 
-RUN ./autogen.sh
-RUN cp -r ${QTDIR}/lib/pkgconfig ${HOSTPREFIX}/lib
-RUN CONFIG_SITE=${HOSTPREFIX}/share/config.site ./configure --prefix=/ --with-qt-bindir=$QTNATIVE/bin
-RUN make ${MAKEOPTS}
+ENV OUTDIR=/outputs/
+RUN mkdir ${OUTDIR}
+RUN releases/macos-patch/dist.sh x
