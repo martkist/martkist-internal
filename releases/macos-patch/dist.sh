@@ -3,7 +3,9 @@
   CONFIGFLAGS="--enable-reduce-exports --disable-bench --disable-gui-tests GENISOIMAGE=$WRAP_DIR/genisoimage"
   FAKETIME_HOST_PROGS=""
   FAKETIME_PROGS="ar ranlib date dmg genisoimage"
-
+  REFERENCE_DATETIME="2023-01-01 00:00:00"
+  REFERENCE_DATE="2023-01-01"
+  REFERENCE_TIME="00:00:00"
   export QT_RCC_TEST=1
   export GZIP="-9n"
   export TAR_OPTIONS="--mtime="$REFERENCE_DATE\\\ $REFERENCE_TIME""
