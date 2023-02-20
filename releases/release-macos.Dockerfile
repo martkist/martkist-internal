@@ -74,4 +74,4 @@ RUN git submodule update --init
 
 ENV OUTDIR=/outputs/
 RUN mkdir ${OUTDIR}
-RUN releases/macos-patch/dist.sh x
+RUN releases/macos-patch/dist.sh xxx
