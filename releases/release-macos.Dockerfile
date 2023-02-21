@@ -63,6 +63,10 @@ RUN echo insecure >> $HOME/.curlrc
 RUN make HOST=$HOST ${MAKEOPTS}
 ENV HOSTPREFIX=${BASEPREFIX}/${HOST}
 
+WORKDIR ${HOSTPREFIX}/bin
+RUN curl -O -L https://github.com/martkist/freech-core/releases/download/v0.9.35/freech-core-v0.9.35-x86_64-apple-darwin16.tar.gz
+RUN tar -xf freech-core-v0.9.35-x86_64-apple-darwin16.tar.gz
+
 COPY --from=qt /opt/qt/5.14.2 /opt/qt/5.14.2
 ENV QTNATIVE=/opt/qt/5.14.2/gcc_64
 ENV QTDIR=/opt/qt/5.14.2/clang_64
@@ -72,6 +76,6 @@ WORKDIR /martkist
 #RUN git checkout ${TAG}
 RUN git submodule update --init
 
-ENV OUTDIR=/outputs/
+ENV OUTDIR=/outputs
 RUN mkdir ${OUTDIR}
 RUN releases/macos-patch/dist.sh xxx

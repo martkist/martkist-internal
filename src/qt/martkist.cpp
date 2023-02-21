@@ -442,15 +442,21 @@ void MartkistApplication::startFreech()
     }
 
     LogPrintf("Starting freechd...\n");
+    auto applicationDirPath = QCoreApplication::applicationDirPath().toStdString();
+    LogPrintf("applicationDirPath: %s\n", applicationDirPath);
     
     // For now we will use a fixed user/pass, to allow users
     // to access backend easily for debugging, but in the future
     // we should generate a random password to improve privacy.
-    #ifdef WIN32
+    #if defined(WIN32)
     bfs::path freechd_path("freechd.exe");
+    #elif defined(MAC_OSX)
+    bfs::path freechd_path(applicationDirPath + "/freechd");
     #else
     bfs::path freechd_path("./freechd");
     #endif
+
+    LogPrintf("freechd_path: %s\n", freechd_path.string());
     
     if (!bfs::exists(freechd_path))
     {

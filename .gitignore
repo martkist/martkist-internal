@@ -134,3 +134,5 @@ freechd
 martkist-qt
 make
 contrib/devtools/split-debug.sh
+distsrc-*/
+temp/*

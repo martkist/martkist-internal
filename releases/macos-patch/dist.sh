@@ -73,11 +73,14 @@ cp ${BASEPREFIX}/${HOST}/native/bin/${HOST}-codesign_allocate unsigned-app-${HOS
 cp ${BASEPREFIX}/${HOST}/native/bin/${HOST}-pagestuff unsigned-app-${HOST}/pagestuff
 mv dist unsigned-app-${HOST}
 pushd unsigned-app-${HOST}
-find . | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-osx-unsigned.tar.gz
+find . | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-macos.tar.gz
 popd
 
+cp ${BASEPREFIX}/${HOST}/bin/freechd dist/Martkist-Qt.app/Contents/MacOS
+cp -r ${BASEPREFIX}/../freech-html dist/Martkist-Qt.app/Contents/MacOS/
+
 make deploy
-${WRAP_DIR}/dmg dmg Martkist-Core.dmg ${OUTDIR}/${DISTNAME}-osx-unsigned.dmg
+${WRAP_DIR}/dmg dmg Martkist-Core.dmg ${OUTDIR}/${DISTNAME}-macos.dmg
 
 cd installed
 find . -name "lib*.la" -delete
@@ -88,4 +91,4 @@ cd ../../
 
 mkdir -p $OUTDIR/src
 mv $SOURCEDIST $OUTDIR/src
-mv ${OUTDIR}/${DISTNAME}-x86_64-*.tar.gz ${OUTDIR}/${DISTNAME}-osx64.tar.gz
+mv ${OUTDIR}/${DISTNAME}-x86_64-*.tar.gz ${OUTDIR}/${DISTNAME}-macos.tar.gz
