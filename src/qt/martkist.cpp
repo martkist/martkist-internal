@@ -413,6 +413,9 @@ MartkistApplication::~MartkistApplication()
 
 void MartkistApplication::startFreech()
 {
+    auto applicationDirPath = QCoreApplication::applicationDirPath().toStdString();
+    LogPrintf("applicationDirPath: %s\n", applicationDirPath);
+
     bfs::path freech_path = GetDataDir() / "freech";
     bfs::path freech_html_path = freech_path / "html";
     LogPrintf("Freech path: %s\n", freech_path.string());
@@ -421,7 +424,7 @@ void MartkistApplication::startFreech()
     LogPrintf("Checking if %s exists...\n", freech_html_path.string());
     if (!bfs::exists(freech_html_path))
     {
-        bfs::path source_html_path("freech-html");
+        bfs::path source_html_path(applicationDirPath + "freech-html");
         if (!bfs::exists(source_html_path))
         {
             LogPrintf("WARNING: Can't find ./freech-html -- Freech integration won't work!\n");
@@ -442,8 +445,6 @@ void MartkistApplication::startFreech()
     }
 
     LogPrintf("Starting freechd...\n");
-    auto applicationDirPath = QCoreApplication::applicationDirPath().toStdString();
-    LogPrintf("applicationDirPath: %s\n", applicationDirPath);
     
     // For now we will use a fixed user/pass, to allow users
     // to access backend easily for debugging, but in the future
