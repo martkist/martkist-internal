@@ -9,7 +9,7 @@ RUN pip3 install aqtinstall
 RUN aqt install-qt linux desktop 5.14.2 gcc_64
 RUN aqt install-qt windows desktop 5.14.2 win64_mingw73
 RUN curl -O -L https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-5.212.0-alpha4/qtwebkit-Windows-Windows_10-Mingw73-Windows-Windows_10-X86_64.7z
-ENV QTDIR=/opt/qt/5.14.2/win64_mingw73
+ENV QTDIR=/opt/qt/5.14.2/mingw73_64
 RUN 7z x qtwebkit-Windows-Windows_10-Mingw73-Windows-Windows_10-X86_64.7z -o${QTDIR}
 ADD win-builder/*.pc ${QTDIR}/lib/pkgconfig/
 
@@ -64,7 +64,7 @@ RUN tar -xf freech-core-v0.9.35-x86_64-w64-mingw32.tar.gz
 
 COPY --from=qt /opt/qt/5.14.2 /opt/qt/5.14.2
 ENV QTNATIVE=/opt/qt/5.14.2/gcc_64
-ENV QTDIR=/opt/qt/5.14.2/win64_mingw73
+ENV QTDIR=/opt/qt/5.14.2/mingw73_64
 RUN cp -r ${QTDIR}/lib/pkgconfig ${HOSTPREFIX}/lib
 
 WORKDIR /martkist
