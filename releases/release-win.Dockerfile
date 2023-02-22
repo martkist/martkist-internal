@@ -26,13 +26,15 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
     autoconf \
     automake \
+    autotools-dev \
+    build-essential \
     bsdmainutils \
     ca-certificates \
     curl \
     faketime \
     g++ \
     g++-mingw-w64 \
-    git-core \
+    git \
     libtool \
     mingw-w64 \
     nsis \
@@ -68,5 +70,6 @@ WORKDIR /martkist
 RUN git submodule update --init
 
 ENV OUTDIR=/outputs
+RUN update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 RUN mkdir ${OUTDIR}
 RUN releases/win-builder/builder.sh

@@ -87,7 +87,7 @@ INSTALLPATH=`pwd`/installed/${DISTNAME}
 mkdir -p ${INSTALLPATH}
 tar --strip-components=1 -xf ../$SOURCEDIST
 
-CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=$QTNATIVE/bin --with-qt-translationdir=$QTDIR/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
+CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE/bin} --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins --with-qt-translationdir=${QTDIR}/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
 make ${MAKEOPTS}
 make ${MAKEOPTS} -C src check-security
 make deploy
