@@ -76,6 +76,7 @@ pushd unsigned-app-${HOST}
 find . | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-macos.tar.gz
 popd
 
+mkdir -p dist/Martkist-Qt.app/Contents/MacOS
 cp ${BASEPREFIX}/${HOST}/bin/freechd dist/Martkist-Qt.app/Contents/MacOS
 cp -r ${BASEPREFIX}/../freech-html dist/Martkist-Qt.app/Contents/MacOS/
 

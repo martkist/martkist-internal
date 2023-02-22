@@ -21,34 +21,35 @@ LABEL maintainer="Martkist Developers"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
-# Keep on separate lines to simplify package changes
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y autoconf
-RUN apt-get install -y automake
-RUN apt-get install -y bsdmainutils
-RUN apt-get install -y ca-certificates
-RUN apt-get install -y cmake
-RUN apt-get install -y curl
-RUN apt-get install -y faketime
-RUN apt-get install -y fonts-tuffy
-RUN apt-get install -y g++
-RUN apt-get install -y git-core
-RUN apt-get install -y imagemagick
-RUN apt-get install -y libcap-dev
-RUN apt-get install -y librsvg2-bin
-RUN apt-get install -y libtiff-tools
-RUN apt-get install -y libtool
-RUN apt-get install -y libz-dev
-RUN apt-get install -y libbz2-dev
-RUN apt-get install -y pkg-config
-RUN apt-get install -y python
-RUN apt-get install -y python-dev
-RUN apt-get install -y python-setuptools
-RUN apt-get install -y xz-utils
+RUN apt-get install -y \
+    autoconf \
+    automake \
+    bsdmainutils \
+    ca-certificates \
+    cmake \
+    curl \
+    faketime \
+    fonts-tuffy \
+    g++ \
+    git-core \
+    imagemagick \
+    libcap-dev \
+    librsvg2-bin \
+    libtiff-tools \
+    libtool \
+    libz-dev \
+    libbz2-dev \
+    pkg-config \
+    python \
+    python-dev \
+    python-setuptools \
+    xz-utils
 
 WORKDIR /
 ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
 RUN git clone https://github.com/blockmartkist/martkist-internal.git martkist
+WORKDIR /martkist
 RUN git checkout ${TAG}
 
 ENV BASEPREFIX=/martkist/depends

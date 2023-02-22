@@ -7,16 +7,16 @@ DOCKEROPTS="--build-arg TAG=$MARTKIST_TAG --build-arg MAKEOPTS=$MAKEOPTS"
 # docker cp "$container_id:/outputs" .
 # docker rm "$container_id"
 
-# echo "Building Windows release..."
-# docker build $DOCKEROPTS -t freech:release-win-$MARTKIST_TAG -f release-win.Dockerfile .
-# container_id=$(docker create "freech:release-win-$MARTKIST_TAG")
-# docker cp "$container_id:/outputs/" .
-# docker rm "$container_id"
-
-echo "Building macOS release..."
-DOCKER_BUILDKIT=0 docker build $DOCKEROPTS -t freech:release-macos-$MARTKIST_TAG -f release-macos.Dockerfile .
-container_id=$(docker create "freech:release-macos-$MARTKIST_TAG")
-docker cp -q "$container_id:/outputs/" .
+echo "Building Windows release..."
+docker build $DOCKEROPTS -t freech:release-win-$MARTKIST_TAG -f release-win.Dockerfile .
+container_id=$(docker create "freech:release-win-$MARTKIST_TAG")
+docker cp "$container_id:/outputs/" .
 docker rm "$container_id"
+
+# echo "Building macOS release..."
+# DOCKER_BUILDKIT=0 docker build $DOCKEROPTS -t freech:release-macos-$MARTKIST_TAG -f release-macos.Dockerfile .
+# container_id=$(docker create "freech:release-macos-$MARTKIST_TAG")
+# docker cp -q "$container_id:/outputs/" .
+# docker rm "$container_id"
 
 echo "Done!"

@@ -424,10 +424,10 @@ void MartkistApplication::startFreech()
     LogPrintf("Checking if %s exists...\n", freech_html_path.string());
     if (!bfs::exists(freech_html_path))
     {
-        bfs::path source_html_path(applicationDirPath + "freech-html");
+        bfs::path source_html_path(applicationDirPath + "/freech-html");
         if (!bfs::exists(source_html_path))
         {
-            LogPrintf("WARNING: Can't find ./freech-html -- Freech integration won't work!\n");
+            LogPrintf("WARNING: Can't find %s -- Freech integration won't work!\n", source_html_path.string());
         }
         else 
         {
