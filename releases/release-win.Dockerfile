@@ -71,6 +71,5 @@ WORKDIR /martkist
 RUN git submodule update --init
 
 ENV OUTDIR=/outputs
-RUN update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 RUN mkdir ${OUTDIR}
 RUN releases/win-builder/builder.sh
