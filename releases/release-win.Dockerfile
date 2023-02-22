@@ -41,13 +41,14 @@ RUN apt-get install -y \
     nsis \
     pkg-config \
     python \
+    rename \
     zip
 
 WORKDIR /
-#ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
+ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
 RUN git clone https://github.com/blockmartkist/martkist-internal.git martkist
 WORKDIR /martkist
-#RUN git checkout ${TAG}
+RUN git checkout ${TAG}
 
 ENV BASEPREFIX=/martkist/depends
 ENV HOST=x86_64-w64-mingw32
@@ -72,4 +73,5 @@ RUN git submodule update --init
 
 ENV OUTDIR=/outputs
 RUN mkdir ${OUTDIR}
+RUN update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 RUN releases/win-builder/builder.sh

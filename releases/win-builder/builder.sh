@@ -97,11 +97,11 @@ cd installed
 find . -name "lib*.la" -delete
 find . -name "lib*.a" -delete
 rm -rf ${DISTNAME}/lib/pkgconfig
-find ${DISTNAME}/bin -type f -executable -exec ${i}-objcopy --only-keep-debug {} {}.dbg \; -exec ${i}-strip -s {} \; -exec ${i}-objcopy --add-gnu-debuglink={}.dbg {} \;
-find ${DISTNAME} -not -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${i}.zip
-find ${DISTNAME} -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${i}-debug.zip
+find ${DISTNAME}/bin -type f -executable -exec ${HOST}-objcopy --only-keep-debug {} {}.dbg \; -exec ${HOST}-strip -s {} \; -exec ${HOST}-objcopy --add-gnu-debuglink={}.dbg {} \;
+find ${DISTNAME} -not -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}.zip
+find ${DISTNAME} -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}-debug.zip
 cd ../../
-rm -rf distsrc-${i}
+rm -rf distsrc-${HOST}
 
 cd $OUTDIR
 rename 's/-setup\.exe$/-setup.exe/' *-setup.exe
