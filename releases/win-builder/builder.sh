@@ -5,8 +5,8 @@
   FAKETIME_PROGS="date makensis zip"
   HOST_CFLAGS="-O2 -g"
   HOST_CXXFLAGS="-O2 -g"
-  REFERENCE_DATETIME="2023-01-01 00:00:00"
-  REFERENCE_DATE="2023-01-01"
+  REFERENCE_DATETIME="2018-01-01 00:00:00"
+  REFERENCE_DATE="2018-01-01"
   REFERENCE_TIME="00:00:00"
   export QT_RCC_TEST=1
   export GZIP="-9n"
@@ -63,7 +63,7 @@ export PATH=${WRAP_DIR}:${PATH}
 
 # Create the release tarball using (arbitrarily) the first host
 ./autogen.sh
-CONFIG_SITE=${HOSTPREFIX}/share/config.site ./configure --prefix=/
+CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins --with-qt-translationdir=${QTDIR}/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
 make dist
 SOURCEDIST=`echo martkistcore-*.tar.gz`
 DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
@@ -87,7 +87,7 @@ INSTALLPATH=`pwd`/installed/${DISTNAME}
 mkdir -p ${INSTALLPATH}
 tar --strip-components=1 -xf ../$SOURCEDIST
 
-CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE/bin} --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins --with-qt-translationdir=${QTDIR}/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
+CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins --with-qt-translationdir=${QTDIR}/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
 make ${MAKEOPTS}
 make ${MAKEOPTS} -C src check-security
 make deploy
