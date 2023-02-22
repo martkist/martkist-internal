@@ -34,6 +34,7 @@ RUN apt-get install -y \
     faketime \
     g++ \
     g++-mingw-w64 \
+    g++-mingw-w64-x86-64 \
     git \
     libtool \
     mingw-w64 \
