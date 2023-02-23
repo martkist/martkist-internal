@@ -87,21 +87,39 @@ INSTALLPATH=`pwd`/installed/${DISTNAME}
 mkdir -p ${INSTALLPATH}
 tar --strip-components=1 -xf ../$SOURCEDIST
 
-CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins --with-qt-translationdir=${QTDIR}/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
+CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
 make ${MAKEOPTS}
 make ${MAKEOPTS} -C src check-security
+
+mkdir -p release
+cp ${BASEPREFIX}/${HOST}/bin/freechd.exe release/
+cp -r ${BASEPREFIX}/../freech-html release/
+pushd $QTDIR/bin
+xargs -a /martkist/releases/win-builder/qtdlls.txt cp -t /martkist/distsrc-${HOST}/release/
+cd ../plugins
+mkdir /martkist/distsrc-${HOST}/release/plugins/
+cp -r imageformats /martkist/distsrc-${HOST}/release/plugins/
+cp -r platforms /martkist/distsrc-${HOST}/release/plugins/
+cp -r styles /martkist/distsrc-${HOST}/release/plugins/
+popd
+
 make deploy
 make install DESTDIR=${INSTALLPATH}
 cp -f martkistcore-*setup*.exe $OUTDIR/
 cd installed
+
+mv ${DISTNAME}/bin/* ${DISTNAME}/
+cp ${BASEPREFIX}/${HOST}/bin/freechd.exe ${DISTNAME}/
+cp -r ${BASEPREFIX}/../freech-html ${DISTNAME}/
+cp /martkist/distsrc-${HOST}/release/*.dll ${DISTNAME}/
+cp -r /martkist/distsrc-${HOST}/release/plugins ${DISTNAME}/
+
 find . -name "lib*.la" -delete
 find . -name "lib*.a" -delete
 rm -rf ${DISTNAME}/lib/pkgconfig
-find ${DISTNAME}/bin -type f -executable -exec ${HOST}-objcopy --only-keep-debug {} {}.dbg \; -exec ${HOST}-strip -s {} \; -exec ${HOST}-objcopy --add-gnu-debuglink={}.dbg {} \;
+find ${DISTNAME} -name *.exe -type f -executable -exec ${HOST}-objcopy --only-keep-debug {} {}.dbg \; -exec ${HOST}-strip -s {} \; -exec ${HOST}-objcopy --add-gnu-debuglink={}.dbg {} \;
 find ${DISTNAME} -not -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}.zip
 find ${DISTNAME} -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}-debug.zip
-cd ../../
-rm -rf distsrc-${HOST}
 
 cd $OUTDIR
 rename 's/-setup\.exe$/-setup.exe/' *-setup.exe

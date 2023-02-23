@@ -74,8 +74,11 @@ Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
     File @abs_top_srcdir@/release/@MARTKIST_GUI_NAME@@EXEEXT@
+    File @abs_top_srcdir@/release/freechd@EXEEXT@
     File /oname=COPYING.txt @abs_top_srcdir@/COPYING
     File /oname=readme.txt @abs_top_srcdir@/doc/README_windows.txt
+    SetOutPath $INSTDIR\freech-html
+    File /r @abs_top_srcdir@/../freech-html\*.*
     SetOutPath $INSTDIR\daemon
     File @abs_top_srcdir@/release/@MARTKIST_DAEMON_NAME@@EXEEXT@
     File @abs_top_srcdir@/release/@MARTKIST_CLI_NAME@@EXEEXT@
