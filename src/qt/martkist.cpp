@@ -421,26 +421,22 @@ void MartkistApplication::startFreech()
     LogPrintf("Freech path: %s\n", freech_path.string());
     LogPrintf("Freech HTML path: %s\n", freech_html_path.string());
 
-    LogPrintf("Checking if %s exists...\n", freech_html_path.string());
-    if (!bfs::exists(freech_html_path))
+    bfs::path source_html_path(applicationDirPath + "/freech-html");
+    if (!bfs::exists(source_html_path))
     {
-        bfs::path source_html_path(applicationDirPath + "/freech-html");
-        if (!bfs::exists(source_html_path))
-        {
-            LogPrintf("WARNING: Can't find %s -- Freech integration won't work!\n", source_html_path.string());
-        }
-        else 
-        {
-            LogPrintf("Deploying freech-html\n");
-            bfs::create_directories(freech_html_path);
+        LogPrintf("WARNING: Can't find %s -- Freech integration won't work!\n", source_html_path.string());
+    }
+    else 
+    {
+        LogPrintf("Deploying freech-html\n");
+        bfs::create_directories(freech_html_path);
 
-            for (const auto& dirEnt : bfs::recursive_directory_iterator{source_html_path})
-            {
-                const auto& path = dirEnt.path();            
-                auto relativePathStr = path.string();
-                boost::replace_first(relativePathStr, source_html_path.string(), "");
-                bfs::copy(path, freech_html_path / relativePathStr);
-            }
+        for (const auto& dirEnt : bfs::recursive_directory_iterator{source_html_path})
+        {
+            const auto& path = dirEnt.path();            
+            auto relativePathStr = path.string();
+            boost::replace_first(relativePathStr, source_html_path.string(), "");
+            bfs::copy(path, freech_html_path / relativePathStr);
         }
     }
 
