@@ -74,21 +74,36 @@ tar --strip-components=1 -xf ../$SOURCEDIST
     mkdir src/obj
     cp ../src/obj/build.h src/obj/
 
-CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=$QTNATIVE/bin --with-qt-translationdir=$QTDIR/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}" LDFLAGS="${HOST_LDFLAGS}"
+CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking  --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}" LDFLAGS="${HOST_LDFLAGS}"
 make ${MAKEOPTS}
 make ${MAKEOPTS} -C src check-security
 
 make install DESTDIR=${INSTALLPATH}
 cd installed
+
 find . -name "lib*.la" -delete
 find . -name "lib*.a" -delete
+find . -name "*.dbg.*" -delete
 rm -rf ${DISTNAME}/lib/pkgconfig
-find ${DISTNAME}/bin -type f -executable -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
-find ${DISTNAME}/lib -type f -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
-find ${DISTNAME} -not -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}.tar.gz
-find ${DISTNAME} -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}-debug.tar.gz
-cd ../../
-rm -rf distsrc-${HOST}
 
-  mkdir -p $OUTDIR/src
-  mv $SOURCEDIST $OUTDIR/src
+mv ${DISTNAME}/bin/* ${INSTALLPATH}/
+mv ${DISTNAME}/lib/* ${INSTALLPATH}/
+cp ${BASEPREFIX}/${HOST}/bin/freechd ${INSTALLPATH}/
+cp -r ${BASEPREFIX}/../freech-html ${INSTALLPATH}/
+
+pushd $QTDIR/lib
+xargs -a /martkist/releases/linux/qtso.txt cp -t ${INSTALLPATH}/
+cd ../plugins
+mkdir ${INSTALLPATH}/plugins/
+cp -r imageformats ${INSTALLPATH}/plugins/
+cp -r platforms ${INSTALLPATH}/plugins/
+popd
+
+# find ${DISTNAME} -type f -executable -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
+# find ${DISTNAME} -type f -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
+# find ${DISTNAME} -not -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}.tar.gz
+# find ${DISTNAME} -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}-debug.tar.gz
+# cd ../../
+
+#   mkdir -p $OUTDIR/src
+#   mv $SOURCEDIST $OUTDIR/src

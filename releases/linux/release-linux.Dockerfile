@@ -7,13 +7,12 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y python3 python3-pip curl p7zip-full
 RUN pip3 install aqtinstall
 RUN aqt install-qt linux desktop 5.14.2 gcc_64
-RUN aqt install-qt mac desktop 5.14.2 clang_64
-RUN curl -O -L https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-5.212.0-alpha4/qtwebkit-MacOS-MacOS_10_13-Clang-MacOS-MacOS_10_13-X86_64.7z
-ENV QTDIR=/opt/qt/5.14.2/clang_64
-RUN 7z x qtwebkit-MacOS-MacOS_10_13-Clang-MacOS-MacOS_10_13-X86_64.7z -o${QTDIR}
-ADD macos-builder/*.pc ${QTDIR}/lib/pkgconfig/
+RUN curl -O -L https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-5.212.0-alpha4/qtwebkit-Linux-RHEL_7_6-GCC-Linux-RHEL_7_6-X86_64.7z
+ENV QTDIR=/opt/qt/5.14.2/gcc_64
+RUN 7z x qtwebkit-Linux-RHEL_7_6-GCC-Linux-RHEL_7_6-X86_64.7z -o${QTDIR}
+ADD linux-builder/*.pc ${QTDIR}/lib/pkgconfig/
 
-FROM ubuntu:trusty as build
+FROM ubuntu:20.04 as build
 ARG TAG
 ARG MAKEOPTS
 LABEL maintainer="Martkist Developers"
@@ -21,43 +20,37 @@ LABEL maintainer="Martkist Developers"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
+# Keep on separate lines to simplify package changes
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
     autoconf \
     automake \
+    autotools-dev \
+    binutils-gold \
+    build-essential \
     bsdmainutils \
     ca-certificates \
-    cmake \
     curl \
     faketime \
-    fonts-tuffy \
-    g++ \
-    git-core \
-    imagemagick \
-    libcap-dev \
-    librsvg2-bin \
-    libtiff-tools \
+    g++-4.8-multilib \
+    gcc-4.8-multilib \
+    git \
     libtool \
-    libz-dev \
-    libbz2-dev \
+    mingw-w64 \
+    nsis \
     pkg-config \
     python \
-    python-dev \
-    python-setuptools \
-    xz-utils
+    rename \
+    zip
 
 WORKDIR /
-ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
+#ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
 RUN git clone https://github.com/blockmartkist/martkist-internal.git martkist
 WORKDIR /martkist
-RUN git checkout ${TAG}
+#RUN git checkout ${TAG}
 
 ENV BASEPREFIX=/martkist/depends
-ENV HOST=x86_64-apple-darwin11
-
-WORKDIR ${BASEPREFIX}/SDKs
-RUN curl -O -L https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.11.sdk.tar.xz
-RUN tar -xf MacOSX10.11.sdk.tar.xz
+ENV HOST=x86_64-linux-gnu
 
 WORKDIR ${BASEPREFIX}
 # trusty certs have expired, but we check input hashes so curl insecure is OK
@@ -66,12 +59,12 @@ RUN make HOST=$HOST ${MAKEOPTS}
 ENV HOSTPREFIX=${BASEPREFIX}/${HOST}
 
 WORKDIR ${HOSTPREFIX}/bin
-RUN curl -O -L https://github.com/martkist/freech-core/releases/download/v0.9.35/freech-core-v0.9.35-x86_64-apple-darwin16.tar.gz
-RUN tar -xf freech-core-v0.9.35-x86_64-apple-darwin16.tar.gz
+RUN curl -O -L https://github.com/martkist/freech-core/releases/download/v0.9.35/freech-core-v0.9.35-x86_64-pc-linux-gnu.tar.gz
+RUN tar -xf freech-core-v0.9.35-x86_64-pc-linux-gnu.tar.gz
 
 COPY --from=qt /opt/qt/5.14.2 /opt/qt/5.14.2
 ENV QTNATIVE=/opt/qt/5.14.2/gcc_64
-ENV QTDIR=/opt/qt/5.14.2/clang_64
+ENV QTDIR=/opt/qt/5.14.2/gcc_64
 RUN cp -r ${QTDIR}/lib/pkgconfig ${HOSTPREFIX}/lib
 
 WORKDIR /martkist
@@ -79,4 +72,4 @@ RUN git submodule update --init
 
 ENV OUTDIR=/outputs
 RUN mkdir ${OUTDIR}
-RUN releases/macos-builder/builder.sh
+RUN releases/linux/builder.sh

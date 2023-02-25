@@ -74,4 +74,4 @@ RUN git submodule update --init
 ENV OUTDIR=/outputs
 RUN mkdir ${OUTDIR}
 RUN update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
-RUN releases/win-builder/builder.sh
+RUN releases/win/builder.sh

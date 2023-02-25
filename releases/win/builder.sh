@@ -63,7 +63,7 @@ export PATH=${WRAP_DIR}:${PATH}
 
 # Create the release tarball using (arbitrarily) the first host
 ./autogen.sh
-CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins --with-qt-translationdir=${QTDIR}/translations ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
+CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --disable-ccache --disable-maintainer-mode --disable-dependency-tracking --with-qt-bindir=${QTNATIVE}/bin --with-qt-translationdir=${QTDIR}/translations --with-gui=qt5 --with-qt-incdir=${QTDIR}/include --with-qt-libdir=${QTDIR}/lib --with-qt-plugindir=${QTDIR}/plugins ${CONFIGFLAGS} CFLAGS="${HOST_CFLAGS}" CXXFLAGS="${HOST_CXXFLAGS}"
 make dist
 SOURCEDIST=`echo martkistcore-*.tar.gz`
 DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
@@ -95,7 +95,7 @@ mkdir -p release
 cp ${BASEPREFIX}/${HOST}/bin/freechd.exe release/
 cp -r ${BASEPREFIX}/../freech-html release/
 pushd $QTDIR/bin
-xargs -a /martkist/releases/win-builder/qtdlls.txt cp -t /martkist/distsrc-${HOST}/release/
+xargs -a /martkist/releases/win/qtdlls.txt cp -t /martkist/distsrc-${HOST}/release/
 cd ../plugins
 mkdir /martkist/distsrc-${HOST}/release/plugins/
 cp -r imageformats /martkist/distsrc-${HOST}/release/plugins/

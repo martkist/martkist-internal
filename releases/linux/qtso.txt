@@ -1,0 +1,17 @@
+libQt5Core.so.5
+libQt5Gui.so.5
+libQt5Multimedia.so.5
+libQt5MultimediaWidgets.so.5
+libQt5Network.so.5
+libQt5OpenGL.so.5
+libQt5Positioning.so.5
+libQt5PrintSupport.so.5
+libQt5Qml.so.5
+libQt5QmlModels.so.5
+libQt5Quick.so.5
+libQt5Sensors.so.5
+libQt5WebChannel.so.5
+libQt5WebKit.so.5
+libQt5WebKitWidgets.so.5
+libQt5Widgets.so.5
+libQt5XcbQpa.so.5
