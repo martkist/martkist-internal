@@ -91,19 +91,16 @@ mv ${DISTNAME}/lib/* ${INSTALLPATH}/
 cp ${BASEPREFIX}/${HOST}/bin/freechd ${INSTALLPATH}/
 cp -r ${BASEPREFIX}/../freech-html ${INSTALLPATH}/
 
-# pushd $QTDIR/lib
-# xargs -a /martkist/releases/linux/qtso.txt cp -t ${INSTALLPATH}/
-# cd ../plugins
-# mkdir ${INSTALLPATH}/plugins/
-# cp -r imageformats ${INSTALLPATH}/plugins/
-# cp -r platforms ${INSTALLPATH}/plugins/
-# popd
+xargs -a /martkist/releases/linux/qtso.txt cp -a -t ${INSTALLPATH}/
+mkdir ${INSTALLPATH}/plugins/
+cp -r $QTDIR/plugins/imageformats ${INSTALLPATH}/plugins/
+cp -r $QTDIR/plugins/platforms ${INSTALLPATH}/plugins/
 
-# find ${DISTNAME} -type f -executable -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
-# find ${DISTNAME} -type f -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
-# find ${DISTNAME} -not -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}.tar.gz
-# find ${DISTNAME} -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}-debug.tar.gz
-# cd ../../
+find ${DISTNAME} -not -name "*.so.*" -type f -executable -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
+find ${DISTNAME} -not -name "*.so.*" -type f -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
+find ${DISTNAME} -not -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}.tar.gz
+find ${DISTNAME} -name "*.dbg" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-${HOST}-debug.tar.gz
+cd ../../
 
-#   mkdir -p $OUTDIR/src
-#   mv $SOURCEDIST $OUTDIR/src
+  mkdir -p $OUTDIR/src
+  mv $SOURCEDIST $OUTDIR/src
