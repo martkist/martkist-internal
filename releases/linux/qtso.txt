@@ -15,3 +15,4 @@ libQt5WebKit.so.5
 libQt5WebKitWidgets.so.5
 libQt5Widgets.so.5
 libQt5XcbQpa.so.5
+libQt5DBus.so.5

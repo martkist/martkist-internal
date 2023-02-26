@@ -1,11 +1,11 @@
 prefix=/opt/qt/5.14.2/win64_mingw73
 exec_prefix=${prefix}
 libdir=${prefix}/lib
-includedir=${prefix}/lib/QtWebKitWidgets.framework/Headers
+includedir=${prefix}/include/QtWebKit
 
-Name: Qt5WebKitWidgets
-Description: Qt WebKitWidgets module
+Name: Qt5WebKit
+Description: Qt WebKit module
 Version: 5.212.0
-Libs: -F${libdir} -framework QtWebKitWidgets
-Cflags: -DQT_WEBKITWIDGETS_LIB -I${includedir} -F${libdir}
-Requires: Qt5Core Qt5Gui Qt5Network Qt5Widgets Qt5WebKit
+Libs: -L${libdir} -lQt5WebKit
+Cflags: -I${includedir} 
+Requires: Qt5Core Qt5Gui Qt5Network

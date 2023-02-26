@@ -369,6 +369,8 @@ AC_DEFUN([_MARTKIST_QT_FIND_STATIC_PLUGINS],[
          PKG_CHECK_MODULES([X11XCB], [x11-xcb], [QT_LIBS="$X11XCB_LIBS $QT_LIBS"])
          if ${PKG_CONFIG} --exists "Qt5Core >= 5.5" 2>/dev/null; then
            PKG_CHECK_MODULES([QTXCBQPA], [Qt5XcbQpa], [QT_LIBS="$QTXCBQPA_LIBS $QT_LIBS"])
+           PKG_CHECK_MODULES([QTDBUS], [Qt5DBus], [QT_LIBS="$QTDBUS_LIBS $QT_LIBS"])
+           PKG_CHECK_MODULES([QTOPENGL], [Qt5OpenGL], [QT_LIBS="$QTOPENGL_LIBS $QT_LIBS"])
          fi
        elif test "x$TARGET_OS" = xdarwin; then
          PKG_CHECK_MODULES([QTPRINT], [Qt5PrintSupport], [QT_LIBS="$QTPRINT_LIBS $QT_LIBS"])
