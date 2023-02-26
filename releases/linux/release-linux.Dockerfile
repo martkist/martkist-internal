@@ -39,7 +39,12 @@ RUN apt-get install -y \
     pkg-config \
     python \
     rename \
-    zip
+    zip \
+    libgl1 \
+    libdbus-1-3 \
+    gstreamer1.0-qt5 \
+    libxml2 \
+    libxslt-dev
 
 WORKDIR /
 ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json

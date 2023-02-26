@@ -91,13 +91,13 @@ mv ${DISTNAME}/lib/* ${INSTALLPATH}/
 cp ${BASEPREFIX}/${HOST}/bin/freechd ${INSTALLPATH}/
 cp -r ${BASEPREFIX}/../freech-html ${INSTALLPATH}/
 
-pushd $QTDIR/lib
-xargs -a /martkist/releases/linux/qtso.txt cp -t ${INSTALLPATH}/
-cd ../plugins
-mkdir ${INSTALLPATH}/plugins/
-cp -r imageformats ${INSTALLPATH}/plugins/
-cp -r platforms ${INSTALLPATH}/plugins/
-popd
+# pushd $QTDIR/lib
+# xargs -a /martkist/releases/linux/qtso.txt cp -t ${INSTALLPATH}/
+# cd ../plugins
+# mkdir ${INSTALLPATH}/plugins/
+# cp -r imageformats ${INSTALLPATH}/plugins/
+# cp -r platforms ${INSTALLPATH}/plugins/
+# popd
 
 # find ${DISTNAME} -type f -executable -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
 # find ${DISTNAME} -type f -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
