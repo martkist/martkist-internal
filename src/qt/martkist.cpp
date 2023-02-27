@@ -436,7 +436,7 @@ void MartkistApplication::startFreech()
             const auto& path = dirEnt.path();
             auto relativePathStr = path.string();
             boost::replace_first(relativePathStr, source_html_path.string(), "");
-            bfs::copy(path, freech_html_path / relativePathStr);
+            bfs::copy(path, freech_html_path / relativePathStr, bfs::copy_option::overwrite_if_exists);
         }
     }
 
