@@ -16,3 +16,7 @@
 /opt/qt/5.14.2/gcc_64/lib/libQt5Widgets.so.5
 /opt/qt/5.14.2/gcc_64/lib/libQt5XcbQpa.so.5
 /opt/qt/5.14.2/gcc_64/lib/libQt5DBus.so.5
+/opt/qt/5.14.2/gcc_64/lib/libicuuc.so.56
+/opt/qt/5.14.2/gcc_64/lib/libicui18n.so.56
+/opt/qt/5.14.2/gcc_64/lib/libicudata.so.56
+/opt/qt/5.14.2/gcc_64/lib/libQt5WaylandClient.so.5

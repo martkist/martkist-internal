@@ -96,7 +96,10 @@ cp -r ${BASEPREFIX}/../freech-html ${INSTALLPATH}/
 xargs -a /martkist/releases/linux/qtso.txt cp -L -t ${INSTALLPATH}/
 mkdir ${INSTALLPATH}/plugins/
 cp -r $QTDIR/plugins/imageformats ${INSTALLPATH}/plugins/
-cp -r $QTDIR/plugins/platforms ${INSTALLPATH}/plugins/
+cp -r $QTDIR/plugins/platforms ${INSTALLPATH}/
+cp -r $QTDIR/plugins/wayland-shell-integration ${INSTALLPATH}/
+cp /martkist/releases/linux/martkist-qt.sh ${INSTALLPATH}/
+chmod +x ${INSTALLPATH}/martkist-qt.sh
 
 find ${DISTNAME} -not -name "*.so.*" -type f -executable -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
 find ${DISTNAME} -not -name "*.so.*" -type f -exec ../contrib/devtools/split-debug.sh {} {} {}.dbg \;
