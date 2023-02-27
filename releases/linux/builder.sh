@@ -87,11 +87,13 @@ find . -name "*.dbg.*" -delete
 rm -rf ${DISTNAME}/lib/pkgconfig
 
 mv ${DISTNAME}/bin/* ${INSTALLPATH}/
+rmdir ${DISTNAME}/bin
 mv ${DISTNAME}/lib/* ${INSTALLPATH}/
+rmdir ${DISTNAME}/lib
 cp ${BASEPREFIX}/${HOST}/bin/freechd ${INSTALLPATH}/
 cp -r ${BASEPREFIX}/../freech-html ${INSTALLPATH}/
 
-xargs -a /martkist/releases/linux/qtso.txt cp -a -t ${INSTALLPATH}/
+xargs -a /martkist/releases/linux/qtso.txt cp -L -t ${INSTALLPATH}/
 mkdir ${INSTALLPATH}/plugins/
 cp -r $QTDIR/plugins/imageformats ${INSTALLPATH}/plugins/
 cp -r $QTDIR/plugins/platforms ${INSTALLPATH}/plugins/
