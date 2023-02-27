@@ -60,8 +60,8 @@ RUN make HOST=$HOST ${MAKEOPTS}
 ENV HOSTPREFIX=${BASEPREFIX}/${HOST}
 
 WORKDIR ${HOSTPREFIX}/bin
-RUN curl -O -L https://github.com/martkist/freech-core/releases/download/v0.9.35/freech-core-v0.9.35-x86_64-w64-mingw32.tar.gz
-RUN tar -xf freech-core-v0.9.35-x86_64-w64-mingw32.tar.gz
+RUN curl -O -L https://github.com/martkist/freech-core/releases/download/v0.9.36/freech-core-v0.9.36-x86_64-w64-mingw32.tar.gz
+RUN tar -xf freech-core-v0.9.36-x86_64-w64-mingw32.tar.gz
 
 COPY --from=qt /opt/qt/5.14.2 /opt/qt/5.14.2
 ENV QTNATIVE=/opt/qt/5.14.2/gcc_64
