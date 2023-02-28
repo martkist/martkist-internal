@@ -95,35 +95,36 @@ RELEASEDIR=/martkist/distsrc-${HOST}/release
 mkdir -p ${RELEASEDIR}
 cp ${BASEPREFIX}/${HOST}/bin/freechd.exe ${RELEASEDIR}/
 cp -r ${BASEPREFIX}/../freech-html ${RELEASEDIR}/
-pushd ${QTDIR}/bin
-xargs -a /martkist/releases/win/qtdlls.txt cp -t ${RELEASEDIR}/
-cd ../plugins
-mkdir ${RELEASEDIR}/plugins/
-cp -r imageformats ${RELEASEDIR}/plugins/
-cp -r platforms ${RELEASEDIR}/plugins/
-cp -r styles ${RELEASEDIR}/plugins/
-popd
+pwd
+# pushd ${QTDIR}/bin
+# xargs -a /martkist/releases/win/qtdlls.txt cp -t ${RELEASEDIR}/
+# cd ../plugins
+# mkdir ${RELEASEDIR}/plugins/
+# cp -r imageformats ${RELEASEDIR}/plugins/
+# cp -r platforms ${RELEASEDIR}/plugins/
+# cp -r styles ${RELEASEDIR}/plugins/
+# popd
 
-make deploy
-make install DESTDIR=${INSTALLPATH}
-cp -f martkistcore-*setup*.exe $OUTDIR/
-cd installed
+# make deploy
+# make install DESTDIR=${INSTALLPATH}
+# cp -f martkistcore-*setup*.exe $OUTDIR/
+# cd installed
 
-mv ${DISTNAME}/bin/* ${DISTNAME}/
-cp ${BASEPREFIX}/${HOST}/bin/freechd.exe ${DISTNAME}/
-cp -r ${BASEPREFIX}/../freech-html ${DISTNAME}/
-cp ${RELEASEDIR}/*.dll ${DISTNAME}/
-cp -r ${RELEASEDIR}/plugins ${DISTNAME}/
+# mv ${DISTNAME}/bin/* ${DISTNAME}/
+# cp ${BASEPREFIX}/${HOST}/bin/freechd.exe ${DISTNAME}/
+# cp -r ${BASEPREFIX}/../freech-html ${DISTNAME}/
+# cp ${RELEASEDIR}/*.dll ${DISTNAME}/
+# cp -r ${RELEASEDIR}/plugins ${DISTNAME}/
 
-find . -name "lib*.la" -delete
-find . -name "lib*.a" -delete
-rm -rf ${DISTNAME}/lib/pkgconfig
-find ${DISTNAME} -name *.exe -type f -executable -exec ${HOST}-objcopy --only-keep-debug {} {}.dbg \; -exec ${HOST}-strip -s {} \; -exec ${HOST}-objcopy --add-gnu-debuglink={}.dbg {} \;
-find ${DISTNAME} -not -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}.zip
-find ${DISTNAME} -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}-debug.zip
+# find . -name "lib*.la" -delete
+# find . -name "lib*.a" -delete
+# rm -rf ${DISTNAME}/lib/pkgconfig
+# find ${DISTNAME} -name *.exe -type f -executable -exec ${HOST}-objcopy --only-keep-debug {} {}.dbg \; -exec ${HOST}-strip -s {} \; -exec ${HOST}-objcopy --add-gnu-debuglink={}.dbg {} \;
+# find ${DISTNAME} -not -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}.zip
+# find ${DISTNAME} -name "*.dbg"  -type f | sort | zip -X@ ${OUTDIR}/${DISTNAME}-${HOST}-debug.zip
 
-cd $OUTDIR
-rename 's/-setup\.exe$/-setup.exe/' *-setup.exe
-find . -name "*-setup.exe" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-win-unsigned.tar.gz
-mv ${OUTDIR}/${DISTNAME}-x86_64-*-debug.zip ${OUTDIR}/${DISTNAME}-win64-debug.zip
-mv ${OUTDIR}/${DISTNAME}-x86_64-*.zip ${OUTDIR}/${DISTNAME}-win64.zip
+# cd $OUTDIR
+# rename 's/-setup\.exe$/-setup.exe/' *-setup.exe
+# find . -name "*-setup.exe" | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ${OUTDIR}/${DISTNAME}-win-unsigned.tar.gz
+# mv ${OUTDIR}/${DISTNAME}-x86_64-*-debug.zip ${OUTDIR}/${DISTNAME}-win64-debug.zip
+# mv ${OUTDIR}/${DISTNAME}-x86_64-*.zip ${OUTDIR}/${DISTNAME}-win64.zip

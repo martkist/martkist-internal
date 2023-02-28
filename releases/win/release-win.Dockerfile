@@ -14,8 +14,6 @@ RUN 7z x qtwebkit-Windows-Windows_10-Mingw73-Windows-Windows_10-X86_64.7z -o${QT
 ADD win/*.pc ${QTDIR}/lib/pkgconfig/
 
 FROM ubuntu:20.04 as build
-ARG TAG
-ARG MAKEOPTS
 LABEL maintainer="Martkist Developers"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -45,6 +43,7 @@ RUN apt-get install -y \
     zip
 
 WORKDIR /
+ARG TAG
 ADD https://api.github.com/repos/blockmartkist/martkist-internal/git/refs/tags/${TAG} version.json
 RUN git clone https://github.com/blockmartkist/martkist-internal.git martkist
 WORKDIR /martkist
@@ -56,6 +55,7 @@ ENV HOST=x86_64-w64-mingw32
 WORKDIR ${BASEPREFIX}
 # trusty certs have expired, but we check input hashes so curl insecure is OK
 RUN echo insecure >> $HOME/.curlrc
+ARG MAKEOPTS
 RUN make HOST=$HOST ${MAKEOPTS}
 ENV HOSTPREFIX=${BASEPREFIX}/${HOST}
 
