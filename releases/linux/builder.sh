@@ -94,9 +94,9 @@ cp ${BASEPREFIX}/${HOST}/bin/freechd ${INSTALLPATH}/
 cp -r ${BASEPREFIX}/../freech-html ${INSTALLPATH}/
 
 xargs -a /martkist/releases/linux/qtso.txt cp -L -t ${INSTALLPATH}/
-cp -r $QTDIR/plugins/imageformats ${INSTALLPATH}/
-cp -r $QTDIR/plugins/platforms ${INSTALLPATH}/
-cp -r $QTDIR/plugins/wayland-shell-integration ${INSTALLPATH}/
+cp -r ${QTDIR}/plugins/imageformats ${INSTALLPATH}/
+cp -r ${QTDIR}/plugins/platforms ${INSTALLPATH}/
+cp -r ${QTDIR}/plugins/wayland-shell-integration ${INSTALLPATH}/
 cp /martkist/releases/linux/martkist-qt.sh ${INSTALLPATH}/
 chmod +x ${INSTALLPATH}/martkist-qt.sh
 
