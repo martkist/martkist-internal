@@ -91,16 +91,17 @@ CONFIG_SITE=${BASEPREFIX}/${HOST}/share/config.site ./configure --prefix=/ --dis
 make ${MAKEOPTS}
 make ${MAKEOPTS} -C src check-security
 
-mkdir -p release
-cp ${BASEPREFIX}/${HOST}/bin/freechd.exe release/
-cp -r ${BASEPREFIX}/../freech-html release/
-pushd $QTDIR/bin
-xargs -a /martkist/releases/win/qtdlls.txt cp -t /martkist/distsrc-${HOST}/release/
+RELEASEDIR=/martkist/distsrc-${HOST}/release
+mkdir -p ${RELEASEDIR}
+cp ${BASEPREFIX}/${HOST}/bin/freechd.exe ${RELEASEDIR}/
+cp -r ${BASEPREFIX}/../freech-html ${RELEASEDIR}/
+pushd ${QTDIR}/bin
+xargs -a /martkist/releases/win/qtdlls.txt cp -t ${RELEASEDIR}/
 cd ../plugins
-mkdir /martkist/distsrc-${HOST}/release/plugins/
-cp -r imageformats /martkist/distsrc-${HOST}/release/plugins/
-cp -r platforms /martkist/distsrc-${HOST}/release/plugins/
-cp -r styles /martkist/distsrc-${HOST}/release/plugins/
+mkdir ${RELEASEDIR}/plugins/
+cp -r imageformats ${RELEASEDIR}/plugins/
+cp -r platforms ${RELEASEDIR}/plugins/
+cp -r styles ${RELEASEDIR}/plugins/
 popd
 
 make deploy
@@ -111,8 +112,8 @@ cd installed
 mv ${DISTNAME}/bin/* ${DISTNAME}/
 cp ${BASEPREFIX}/${HOST}/bin/freechd.exe ${DISTNAME}/
 cp -r ${BASEPREFIX}/../freech-html ${DISTNAME}/
-cp /martkist/distsrc-${HOST}/release/*.dll ${DISTNAME}/
-cp -r /martkist/distsrc-${HOST}/release/plugins ${DISTNAME}/
+cp ${RELEASEDIR}/*.dll ${DISTNAME}/
+cp -r ${RELEASEDIR}/plugins ${DISTNAME}/
 
 find . -name "lib*.la" -delete
 find . -name "lib*.a" -delete
