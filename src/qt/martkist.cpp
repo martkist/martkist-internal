@@ -436,7 +436,11 @@ void MartkistApplication::startFreech()
             const auto& path = dirEnt.path();
             auto relativePathStr = path.string();
             boost::replace_first(relativePathStr, source_html_path.string(), "");
-            bfs::copy(path, freech_html_path / relativePathStr, bfs::copy_option::overwrite_if_exists);
+            auto target = freech_html_path / relativePathStr;
+            if (!bfs::exists(target))
+                bfs::copy(path, target);
+            else if (bfs::is_regular_file(path))
+                bfs::copy_file(path, target, bfs::copy_option::overwrite_if_exists);
         }
     }
 
